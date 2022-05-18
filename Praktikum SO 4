@@ -1,0 +1,66 @@
+package com.mkyong;
+import java.util.concurrent.Semaphore;
+public class SemaphoreTest {
+// max 1 people
+static Semaphore semaphore = new Semaphore(1);
+static class MyLockerThread extends Thread {
+String name = &quot;&quot;;
+MyLockerThread(String name) {
+this.name = name;
+}
+public void run() {
+try {
+System.out.println(name + &quot;: acquiring lock...&quot;);
+System.out.println(name + &quot;: available Semaphore
+
+permits now: &quot; +
+semaphore.availablePermits());
+
+semaphore.acquire();
+System.out.println(name + &quot; : got the permit!&quot;);
+try {
+for (int i = 1; i &lt;= 5; i++) {
+
+System.out.println(name + &quot; : is
+performing operation &quot; + i +
+&quot;, available Semaphore permits : &quot;+
+semaphore.availablePermits());
+
+// sleep 1 second
+Thread.sleep(1000);
+}
+} finally {
+// calling release() after a successful acquire()
+System.out.println(name +
+&quot; : releasing lock...&quot;);
+
+semaphore.release();
+System.out.println(name +
+
+&quot; : available Semaphore permits now: &quot;
++ semaphore.availablePermits());
+
+}
+} catch (InterruptedException e) {
+e.printStackTrace();
+}
+}
+}
+public static void main(String[] args) {
+System.out.println(&quot;Total available Semaphore permits : &quot;
+
++ semaphore.availablePermits());
+MyLockerThread t1 = new MyLockerThread(&quot;A&quot;);
+t1.start();
+MyLockerThread t2 = new MyLockerThread(&quot;B&quot;);
+t2.start();
+MyLockerThread t3 = new MyLockerThread(&quot;C&quot;);
+t3.start();
+MyLockerThread t4 = new MyLockerThread(&quot;D&quot;);
+t4.start();
+MyLockerThread t5 = new MyLockerThread(&quot;E&quot;);
+t5.start();
+MyLockerThread t6 = new MyLockerThread(&quot;F&quot;);
+t6.start();
+}
+}
